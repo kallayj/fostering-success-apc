@@ -61,13 +61,9 @@ rename_files_and_dirs() {
 }
 
 # Rename files in EM_FRQ
-rename_files_and_dirs "/home/yoni/source/fostering-success-apc/EM_FRQ" "EM" "Wisusik"
+# rename_files_and_dirs "/home/yoni/source/fostering-success-apc/EM_FRQ" "EM" "Wisusik"
 
 # Rename files in Mechanics_FRQ
-rename_files_and_dirs "/home/yoni/source/fostering-success-apc/Mechanics_FRQ" "Mechanics" "Wisuisik"
-
-# Rename files in Solutions directory
-rename_files_and_dirs "/home/yoni/source/fostering-success-apc/Solutions" "Solutions" "Wisusik"
-rename_files_and_dirs "/home/yoni/source/fostering-success-apc/Solutions" "Solutions" "Wisuisik"
+rename_files_and_dirs "/home/yoni/source/fostering-success-apc/Mechanics_FRQ/Scoring_Guidelines" "Mechanics" "Wisusik"
 
 echo "Renaming complete"
