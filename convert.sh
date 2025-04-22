@@ -23,10 +23,10 @@ for docx_file in "$input_dir"/*.docx; do
     pandoc "$docx_file" -o "$doc_output_dir/$filename.md" --extract-media="$doc_output_dir"
     if [[ "$OSTYPE" == "darwin"* ]]; then
         # macOS version
-        sed -i '' "s|$doc_output_dir/media|media|g" "$doc_output_dir/$filename.md"
+        sed -i '' "s|$doc_output_dir/media|media|g" "$doc_output_dir/index.md"
     else
         # Linux version
-        sed -i "s|$doc_output_dir/media|media|g" "$doc_output_dir/$filename.md"
+        sed -i "s|$doc_output_dir/media|media|g" "$doc_output_dir/index.md"
     fi
     echo "Done: $filename"
 done
