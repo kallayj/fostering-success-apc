@@ -39,29 +39,30 @@ download_from_gdrive() {
     # that require authentication
     
     # First get a confirmation token
-    local confirm=$(curl -s -L "https://drive.google.com/uc?export=download&id=$file_id" | 
-                  grep -o 'confirm=[^&]*' | sed 's/confirm=//')
+    #local confirm=$(curl -s -L "https://drive.google.com/uc?export=download&id=$file_id" | 
+    #              grep -o 'confirm=[^&]*' | sed 's/confirm=//')
     
-    if [ -n "$confirm" ]; then
+    #if [ -n "$confirm" ]; then
         # If we have a token, use it to download
-        curl -L "https://drive.google.com/uc?export=download&confirm=$confirm&id=$file_id" -o "$output_file"
-    else
+        #curl -L "https://drive.google.com/uc?export=download&confirm=t&id=$file_id" -o "$output_file"
+    echo "https://drive.google.com/uc?export=download&confirm=t&id=$file_id"
+    #else
         # Try direct download
-        curl -L "https://drive.google.com/uc?export=download&id=$file_id" -o "$output_file"
-    fi
+    #    curl -L "https://drive.google.com/uc?export=download&id=$file_id" -o "$output_file"
+    #fi
     
     # Check if download was successful
-    if [ $? -ne 0 ] || [ ! -s "$output_file" ]; then
-        echo "Warning: Failed to download $output_file with file_id=$file_id" >&2
-        echo "You may need to download this file manually." >&2
-        # Create an empty placeholder file
-        touch "$output_file"
-        echo "[PLACEHOLDER - Manual download required]" > "$output_file"
-        return 1
-    else
-        echo "Successfully downloaded $output_file"
-        return 0
-    fi
+    # if [ $? -ne 0 ] || [ ! -s "$output_file" ]; then
+    #     echo "Warning: Failed to download $output_file with file_id=$file_id" >&2
+    #     echo "You may need to download this file manually." >&2
+    #     # Create an empty placeholder file
+    #     touch "$output_file"
+    #     echo "[PLACEHOLDER - Manual download required]" > "$output_file"
+    #     return 1
+    # else
+    #     echo "Successfully downloaded $output_file"
+    #     return 0
+    # fi
 }
 
 # Function to process index file and update links
@@ -112,67 +113,67 @@ update_index_file() {
             fi
         fi
         
-        # Replace problem and scoring guideline links
-        if [[ $line == *"docs.google.com/document"* ]]; then
-            # Replace problem Google Drive link with local file
-            problem_title=$(echo "$line" | grep -o '\[[^]]*\]' | head -1 | tr -d '[]')
-            question_id=$(echo "$line" | grep -o 'Wisusik\.[A-Z]*\.[A-Z]*\.[0-9]*' | head -1)
-            if [ -z "$question_id" ]; then
-                question_id=$(echo "$line" | grep -o 'Wisuisik\.[A-Z]*\.[A-Z]*\.[0-9]*' | head -1)
-            fi
+        # # Replace problem and scoring guideline links
+        # if [[ $line == *"docs.google.com/document"* ]]; then
+        #     # Replace problem Google Drive link with local file
+        #     problem_title=$(echo "$line" | grep -o '\[[^]]*\]' | head -1 | tr -d '[]')
+        #     question_id=$(echo "$line" | grep -o 'Wisusik\.[A-Z]*\.[A-Z]*\.[0-9]*' | head -1)
+        #     if [ -z "$question_id" ]; then
+        #         question_id=$(echo "$line" | grep -o 'Wisuisik\.[A-Z]*\.[A-Z]*\.[0-9]*' | head -1)
+        #     fi
             
-            if [ -n "$question_id" ]; then
-                local_problem_path=""
-                if [[ $dir_type == "EM" ]]; then
-                    local_problem_path="/EM_FRQ/Copy of $question_id"
-                    if [[ -d "$EM_FRQ_DIR/Copy of $question_id ($problem_title)" ]]; then
-                        local_problem_path="/EM_FRQ/Copy of $question_id ($problem_title)/Copy of $question_id ($problem_title).md"
-                    else
-                        local_problem_path="/EM_FRQ/Copy of $question_id/Copy of $question_id.md"
-                    fi
-                else
-                    local_problem_path="/Mechanics_FRQ/$question_id"
-                    if [[ -d "$MECH_FRQ_DIR/$question_id ($problem_title)" ]]; then
-                        local_problem_path="/Mechanics_FRQ/$question_id ($problem_title)/$question_id ($problem_title).md"
-                    else
-                        local_problem_path="/Mechanics_FRQ/$question_id/$question_id.md"
-                    fi
-                fi
+        #     if [ -n "$question_id" ]; then
+        #         local_problem_path=""
+        #         if [[ $dir_type == "EM" ]]; then
+        #             local_problem_path="/EM_FRQ/Copy of $question_id"
+        #             if [[ -d "$EM_FRQ_DIR/Copy of $question_id ($problem_title)" ]]; then
+        #                 local_problem_path="/EM_FRQ/Copy of $question_id ($problem_title)/Copy of $question_id ($problem_title).md"
+        #             else
+        #                 local_problem_path="/EM_FRQ/Copy of $question_id/Copy of $question_id.md"
+        #             fi
+        #         else
+        #             local_problem_path="/Mechanics_FRQ/$question_id"
+        #             if [[ -d "$MECH_FRQ_DIR/$question_id ($problem_title)" ]]; then
+        #                 local_problem_path="/Mechanics_FRQ/$question_id ($problem_title)/$question_id ($problem_title).md"
+        #             else
+        #                 local_problem_path="/Mechanics_FRQ/$question_id/$question_id.md"
+        #             fi
+        #         fi
                 
-                # Only replace if local file exists
-                if [[ -f "$BASE_DIR$local_problem_path" ]]; then
-                    line=$(echo "$line" | sed "s|\[\([^]]*\)\](https://docs.google.com[^)]*)|\[\1\]($local_problem_path)|")
-                fi
-            fi
-        fi
+        #         # Only replace if local file exists
+        #         if [[ -f "$BASE_DIR$local_problem_path" ]]; then
+        #             line=$(echo "$line" | sed "s|\[\([^]]*\)\](https://docs.google.com[^)]*)|\[\1\]($local_problem_path)|")
+        #         fi
+        #     fi
+        # fi
         
-        if [[ $line == *"Scoring Guidelines"*"drive.google.com"* ]]; then
-            # Replace scoring guideline link with local path
-            question_id=$(echo "$line" | grep -o 'Wisusik\.[A-Z]*\.[A-Z]*\.[0-9]*')
-            if [ -z "$question_id" ]; then
-                question_id=$(echo "$line" | grep -o 'Wisuisik\.[A-Z]*\.[A-Z]*\.[0-9]*')
-            fi
+        # if [[ $line == *"Scoring Guidelines"*"drive.google.com"* ]]; then
+        #     # Replace scoring guideline link with local path
+        #     question_id=$(echo "$line" | grep -o 'Wisusik\.[A-Z]*\.[A-Z]*\.[0-9]*')
+        #     if [ -z "$question_id" ]; then
+        #         question_id=$(echo "$line" | grep -o 'Wisuisik\.[A-Z]*\.[A-Z]*\.[0-9]*')
+        #     fi
             
-            local_sg_path=""
-            if [[ $dir_type == "EM" ]]; then
-                local_sg_path="/EM_FRQ/Scoring_Guidelines/Copy of (SG) $question_id/Copy of (SG) $question_id.md"
-            else
-                local_sg_path="/Mechanics_FRQ/Scoring_Guidelines/(SG) $question_id/(SG) $question_id.md"
-            fi
+        #     local_sg_path=""
+        #     if [[ $dir_type == "EM" ]]; then
+        #         local_sg_path="/EM_FRQ/Scoring_Guidelines/Copy of (SG) $question_id/Copy of (SG) $question_id.md"
+        #     else
+        #         local_sg_path="/Mechanics_FRQ/Scoring_Guidelines/(SG) $question_id/(SG) $question_id.md"
+        #     fi
             
-            # Only replace if local file exists
-            if [[ -f "$BASE_DIR$local_sg_path" ]]; then
-                line=$(echo "$line" | sed "s|\[Scoring Guidelines\](https://drive.google.com[^)]*)|\[Scoring Guidelines\]($local_sg_path)|")
-            fi
-        fi
+        #     # Only replace if local file exists
+        #     if [[ -f "$BASE_DIR$local_sg_path" ]]; then
+        #         line=$(echo "$line" | sed "s|\[Scoring Guidelines\](https://drive.google.com[^)]*)|\[Scoring Guidelines\]($local_sg_path)|")
+        #     fi
+        # fi
         
-        # Write the updated line to the temp file
-        echo "$line" >> "$temp_file"
+        # # Write the updated line to the temp file
+        # echo "$line" >> "$temp_file"
     done < "$file"
     
     # Replace the original file with the updated one
-    mv "$temp_file" "$file"
-    echo "Updated $file"
+    #mv "$temp_file" "$file"
+    #echo "Updated $file"
 }
 
 # Main script execution
