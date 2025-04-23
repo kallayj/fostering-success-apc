@@ -23,13 +23,33 @@ convert_markdown_to_html() {
     # Create output directory if it doesn't exist
     mkdir -p "$dir_name"
     
+    # Calculate relative path to common directory based on output file depth
+    local depth=$(echo "$output_path" | sed 's/[^\/]//g' | wc -c)
+    local rel_path="../"
+    for ((i=2; i<depth; i++)); do
+        rel_path="../$rel_path"
+    done
+    
+    # Get title based on folder name or file name
+    local title=""
+    local base_name=$(basename "$md_file" .md)
+    if [ "$base_name" = "index" ]; then
+        # Use parent folder name for index.md files
+        title=$(basename "$(dirname "$md_file")")
+    else
+        # Use file name for non-index files
+        title="$base_name"
+    fi
+    
     # Convert markdown to HTML using pandoc
     pandoc "$md_file" \
         --standalone \
         --from markdown \
         --to html \
+        --mathjax \
+        --metadata title="$title" \
         --output "$output_path" \
-        --css "/common/style.css"    
+        --css "${rel_path}common/style.css"    
     # Fix links from .md to .html
     if [[ "$OSTYPE" == "darwin"* ]]; then
         # macOS version
@@ -38,7 +58,7 @@ convert_markdown_to_html() {
         # Fix index.html links
         sed -i '' 's/\/index\.html"/\/"/' "$output_path"
         # Fix references to common folder
-        sed -i '' 's/\.\.\/.\.\.\/common\//\/common\//g' "$output_path"
+        sed -i '' 's@\.\./\.\.\/common\/@'"${rel_path}"'common\/@g' "$output_path"
     else
         # Linux version
         sed -i 's/\.md"/\.html"/g' "$output_path"
@@ -46,7 +66,7 @@ convert_markdown_to_html() {
         # Fix index.html links
         sed -i 's/\/index\.html"/\/"/' "$output_path"
         # Fix references to common folder
-        sed -i 's/\.\.\/.\.\.\/common\//\/common\//g' "$output_path"
+        sed -i 's@\.\./\.\.\/common\/@'"${rel_path}"'common\/@g' "$output_path"
     fi
     
     echo "Converted: $md_file -> $output_path"
