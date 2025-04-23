@@ -1,4 +1,4 @@
--[[emag_lab|LAB]]
--[[emag_mr|MR]]
--[[emag_qqt|QQT]]
--[[emag_tbr|TBR]]
+- [LAB](./emag_lab.md)
+- [MR](./emag_mr.md)
+- [QQT](./emag_qqt.md)
+- [TBR](./emag_tbr.md)

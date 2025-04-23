@@ -1,3 +1,3 @@
--[[motion_forces|Motion and Forces]]
--[[conservation|Conservation]]
--[[rotation_shm|Rotation and Simple Harmonic Motion]]
+- [Motion and Forces](./motion_forces.md)
+- [Conservation](./conservation.md)
+- [Rotation and Simple Harmonic Motion](./rotation_shm.md)
