@@ -23,10 +23,15 @@ convert_markdown_to_html() {
     # Create output directory if it doesn't exist
     mkdir -p "$dir_name"
     
-    # Calculate relative path to common directory based on output file depth
-    local depth=$(echo "$output_path" | sed 's/[^\/]//g' | wc -c)
-    local rel_path="../"
-    for ((i=2; i<depth; i++)); do
+    # Calculate relative path to common directory based on nesting level from OUTPUT_DIR
+    local rel_path_to_output_dir="${output_path#$OUTPUT_DIR/}"
+    # Count directory levels (number of slashes)
+    local depth=$(echo "$rel_path_to_output_dir" | grep -o '/' | wc -l)
+    
+    # For root level files (depth=0), path is just "common/style.css"
+    # For each level of nesting, add one "../"
+    local rel_path=""
+    for ((i=0; i<depth; i++)); do
         rel_path="../$rel_path"
     done
     
