@@ -1,3 +1,5 @@
+This is a fork of Foster Wisusik's work, converted to Markdown and configured for serving as a website. The original README text is below:
+
 Welcome,
 
 Here are some free response questions I’ve written for AP Physics C, aligned with the new style of the 2025 exams. Overall, these questions lean toward the more straightforward/easier side, as I’m still developing my skills in crafting the truly odd and novel scenarios we all love (and students hate to see in May).
