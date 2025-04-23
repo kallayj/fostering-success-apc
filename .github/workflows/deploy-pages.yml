@@ -27,9 +27,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       
-      - name: Install Pandoc
-        run: sudo apt-get update && sudo apt-get install -y pandoc
-      
+      - name: Install
+        uses: pandoc/actions/setup@v1
+        with:
+          version: 3.6.3
+
       - name: Build static website
         run: |
           chmod +x ./generate_website.sh
