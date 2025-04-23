@@ -37,12 +37,16 @@ convert_markdown_to_html() {
         sed -i '' 's/\.md#/\.html#/g' "$output_path"
         # Fix index.html links
         sed -i '' 's/\/index\.html"/\/"/' "$output_path"
+        # Fix references to common folder
+        sed -i '' 's/\.\.\/.\.\.\/common\//\/common\//g' "$output_path"
     else
         # Linux version
         sed -i 's/\.md"/\.html"/g' "$output_path"
         sed -i 's/\.md#/\.html#/g' "$output_path"
         # Fix index.html links
         sed -i 's/\/index\.html"/\/"/' "$output_path"
+        # Fix references to common folder
+        sed -i 's/\.\.\/.\.\.\/common\//\/common\//g' "$output_path"
     fi
     
     echo "Converted: $md_file -> $output_path"
