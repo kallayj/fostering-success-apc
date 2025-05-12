@@ -45,7 +45,7 @@ ii.) 5 Points
 | solves for $F_{T}$                                           | Point |
 |                                                              |       |
 | (Correct Final Answer: $F_{T} =$                             |       |
-| $\frac{7\ (\sin\theta - \mu\cos\theta)\  + 17}{5}$ $Mg$      |       |
+| $\frac{7\ (\sin\theta - \mu\cos\theta)\  + 7}{5}$ $Mg$      |       |
 +--------------------------------------------------------------+-------+
 
 *\*Scoring Note\**
@@ -79,11 +79,11 @@ $2Ma = F_{T} - 2Mg$
 
 $F_{T} = 2M(a + g)$
 
-$=$ $2M($$\frac{7\ (\sin\theta - \mu\cos\theta)\  - 3}{10}$ $+ 2)g$
+$=$ $2M($$\frac{7\ (\sin\theta - \mu\cos\theta)\  - 3}{10}$ $+ 1)g$
 
-$=$ $2M($$\frac{7\ (\sin\theta - \mu\cos\theta)\  + 17}{10}$$)g$
+$=$ $2M($$\frac{7\ (\sin\theta - \mu\cos\theta)\  + 7}{10}$$)g$
 
-$F_{T} = ($$\frac{7\ (\sin\theta - \mu\cos\theta)\  + 17}{5}$$)Mg$
+$F_{T} = ($$\frac{7\ (\sin\theta - \mu\cos\theta)\  + 7}{5}$$)Mg$
 
 b.) 3 Points
 
